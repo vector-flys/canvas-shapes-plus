@@ -1,6 +1,6 @@
 // deno-lint-ignore-file no-this-alias
 import { CanvasRenderingContext2D } from "canvas";
-import { fill, stroke } from "./draw.js";
+import { fill, outline, stroke } from "./draw.js";
 
 export function createCircle(
   ctx: CanvasRenderingContext2D,
@@ -24,14 +24,14 @@ export function createCircle(
       const y = _options.y == 0 ? 0 : _options.y || (options.y as number);
       const radius = _options.radius || (options.radius as number);
       const color = _options.color || (options.color as string);
+      const bColor = _options.bColor || (options.bColor as string);
       ctx.beginPath();
       ctx.arc(x, y, radius, 0, Math.PI * 2, false);
       ctx.closePath();
       if (_options.drawType == "fill") fill(ctx, color);
       else if (_options.drawType == "stroke") stroke(ctx, color);
       else if (_options.drawType == "outline") {
-        fill(ctx, color);
-        stroke(ctx, "white");
+        outline(ctx, color, bColor);
       }
       const draw = this;
       return {
@@ -51,6 +51,7 @@ export interface CircleOptions {
   x?: number;
   y?: number;
   color?: string;
+  bColor?: string;
   radius?: number;
 }
 
