@@ -1,6 +1,98 @@
 // deno-lint-ignore-file no-this-alias
 import { CanvasRenderingContext2D } from "canvas";
+import { fill, outline, stroke } from "./draw";
 
+/**
+ * Equilateral triangle (centered at x, y)
+ *
+ * This is a separate function because I could not get the generic
+ * one to draw the triangle consistently for all drawTypes.
+ *
+ * @param ctx
+ * @param options
+ * @returns
+ */
+export function createEquiTriangle(
+  ctx: CanvasRenderingContext2D,
+  options: EquiTriangleOptions
+): EquiTriangleReturn {
+  if (!options) options = {};
+  if (!options.x) options.x = 0;
+  if (!options.y) options.y = 0;
+  if (!options.color) options.color = "black";
+  if (!options.height && options.height != 0) options.height = 50;
+
+  return {
+    x: options.x,
+    y: options.y,
+    height: options.height,
+    color: options.color,
+    draw(_options: EquiTriangleDrawOptions): EquiTriangleReturn {
+      if (!_options) _options = {};
+      if (!_options.drawType) _options.drawType = "fill";
+      const x = _options.x == 0 ? 0 : _options.x || (options.x as number);
+      const y = _options.y == 0 ? 0 : _options.y || (options.y as number);
+      const height = _options.height || (options.height as number);
+      const color = _options.color || (options.color as string);
+      const bColor = _options.bColor || (options.bColor as string);
+
+      // Create a path for an equilateral triangle of height "h" centered at (x, y)
+      const radius = height / 2;
+      const x1 = x - radius;
+      const y1 = y + radius;
+      const x2 = x;
+      const y2 = y - radius;
+      const x3 = x + radius;
+      const y3 = y + radius;
+
+      ctx.beginPath();
+      ctx.moveTo(x1, y1);
+      ctx.lineTo(x2, y2);
+      ctx.lineTo(x3, y3);
+      ctx.lineTo(x1, y1);
+      ctx.closePath();
+
+      if (_options.drawType == "fill") fill(ctx, color);
+      else if (_options.drawType == "stroke") stroke(ctx, color);
+      else if (_options.drawType == "outline") {
+        outline(ctx, color, bColor);
+      }
+      const draw = this;
+      return {
+        x,
+        y,
+        height,
+        color,
+        draw(options: EquiTriangleDrawOptions): EquiTriangleReturn {
+          return draw.draw(options);
+        },
+      };
+    },
+  };
+}
+
+export interface EquiTriangleOptions {
+  x?: number;
+  y?: number;
+  color?: string;
+  bColor?: string;
+  height?: number;
+}
+
+export interface EquiTriangleDrawOptions extends EquiTriangleOptions {
+  drawType?: "fill" | "stroke" | "outline";
+}
+
+export interface EquiTriangleReturn extends EquiTriangleOptions {
+  draw(options?: EquiTriangleDrawOptions): this;
+}
+
+/**
+ * Generic triangle
+ * @param ctx
+ * @param options
+ * @returns
+ */
 export function createTriangle(
   ctx: CanvasRenderingContext2D,
   options: TriangleOptions
