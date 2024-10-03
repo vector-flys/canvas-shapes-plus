@@ -1,6 +1,6 @@
-# Update
+# Updates
 ```
-1- Fix some problim
+1- Tweaks by papavector
 ```
 # Resorce
 - [deno](https://deno.land/x/shapes_plus@v0.0.5)
