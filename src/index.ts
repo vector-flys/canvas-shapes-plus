@@ -4,7 +4,7 @@ import {
   Canvas,
   registerFont,
 } from "canvas";
-import * as fs from "fs";
+// import * as fs from "fs";
 
 import { createCircle, CircleOptions, CircleReturn } from "./shapes/circle.js";
 import { createText, TextOptions, TextReturn } from "./shapes/text.js";
@@ -78,22 +78,22 @@ export class Shapes {
       return this.canvas.toBuffer(mimeType as "image/jpeg", { quality });
     else return this.canvas.toBuffer("image/png");
   }
-  toSave(path?: string, mimeType?: "jpeg" | "png") {
-    let stream: fs.WriteStream;
-    if (!path)
-      path = (
-        Math.floor(Math.random() * 7508567556840459) + 111111111
-      ).toString();
-    if (mimeType == "jpeg")
-      stream = this.canvas
-        .createJPEGStream()
-        .pipe(fs.createWriteStream(path + ".jpeg"));
-    else
-      stream = this.canvas
-        .createPNGStream()
-        .pipe(fs.createWriteStream(path + ".png"));
-    return stream;
-  }
+  // toSave(path?: string, mimeType?: "jpeg" | "png") {
+  //   let stream: fs.WriteStream;
+  //   if (!path)
+  //     path = (
+  //       Math.floor(Math.random() * 7508567556840459) + 111111111
+  //     ).toString();
+  //   if (mimeType == "jpeg")
+  //     stream = this.canvas
+  //       .createJPEGStream()
+  //       .pipe(fs.createWriteStream(path + ".jpeg"));
+  //   else
+  //     stream = this.canvas
+  //       .createPNGStream()
+  //       .pipe(fs.createWriteStream(path + ".png"));
+  //   return stream;
+  // }
 }
 
 export function addFontFamily(
