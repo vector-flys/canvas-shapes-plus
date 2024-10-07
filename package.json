@@ -28,7 +28,7 @@
   "author": "Hlever",
   "license": "ISC",
   "dependencies": {
-    "canvas": "^2.11.2"
+    "canvas": "^3.0.0-rc2"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
